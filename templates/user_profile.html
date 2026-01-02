@@ -1,0 +1,158 @@
+{% extends "base.html" %}
+
+{% block title %}My Profile{% endblock %}
+
+{% block extra_css %}
+<style>
+    .profile-container {
+        max-width: 800px;
+        margin: 0 auto;
+    }
+    
+    .profile-header {
+        text-align: center;
+        margin-bottom: 40px;
+    }
+    
+    .profile-header h2 {
+        color: #667eea;
+        font-size: 32px;
+        margin-bottom: 10px;
+    }
+    
+    .current-photo {
+        text-align: center;
+        margin-bottom: 30px;
+    }
+    
+    .current-photo img {
+        max-width: 300px;
+        max-height: 300px;
+        border-radius: 10px;
+        box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+    }
+    
+    .current-photo p {
+        color: #666;
+        margin-top: 10px;
+    }
+    
+    .profile-form {
+        background: #f8f9fa;
+        padding: 30px;
+        border-radius: 10px;
+    }
+    
+    .form-section {
+        margin-bottom: 30px;
+    }
+    
+    .form-section h3 {
+        color: #667eea;
+        margin-bottom: 20px;
+    }
+    
+    .file-input-wrapper {
+        position: relative;
+        display: inline-block;
+    }
+    
+    .file-input-label {
+        display: inline-block;
+        padding: 12px 30px;
+        background: #6c757d;
+        color: white;
+        border-radius: 5px;
+        cursor: pointer;
+        transition: background 0.3s;
+    }
+    
+    .file-input-label:hover {
+        background: #5a6268;
+    }
+    
+    input[type="file"] {
+        position: absolute;
+        left: -9999px;
+    }
+    
+    .file-name {
+        display: inline-block;
+        margin-left: 15px;
+        color: #666;
+    }
+</style>
+{% endblock %}
+
+{% block content %}
+<div class="profile-container">
+    <div class="profile-header">
+        <h2>My Profile</h2>
+        <p>Welcome, {{ user.username }}!</p>
+    </div>
+    
+    <div class="current-photo">
+        {% if user.photo %}
+            <img src="{{ url_for('static', filename='uploads/' + user.photo) }}" alt="Profile Photo">
+            <p>Current profile photo</p>
+        {% else %}
+            <p>No photo uploaded yet</p>
+        {% endif %}
+    </div>
+    
+    <div class="profile-form">
+        <form method="POST" action="{{ url_for('user_profile') }}" enctype="multipart/form-data">
+            <div class="form-section">
+                <h3>Personal Information</h3>
+                
+                <div class="form-group">
+                    <label for="name">Name:</label>
+                    <input type="text" id="name" name="name" value="{{ user.name or '' }}" placeholder="Enter your name">
+                </div>
+                
+                <div class="form-group">
+                    <label for="surname">Surname:</label>
+                    <input type="text" id="surname" name="surname" value="{{ user.surname or '' }}" placeholder="Enter your surname">
+                </div>
+                
+                <div class="form-group">
+                    <label for="year_of_birth">Year of Birth:</label>
+                    <input type="number" id="year_of_birth" name="year_of_birth" value="{{ user.year_of_birth or '' }}" placeholder="e.g., 1990" min="1900" max="2024">
+                </div>
+                
+                <div class="form-group">
+                    <label for="description">About Me:</label>
+                    <textarea id="description" name="description" placeholder="Tell us about yourself...">{{ user.description or '' }}</textarea>
+                </div>
+            </div>
+            
+            <div class="form-section">
+                <h3>Profile Photo</h3>
+                
+                <div class="form-group">
+                    <label for="photo">Upload New Photo:</label>
+                    <div class="file-input-wrapper">
+                        <label for="photo" class="file-input-label">Choose File</label>
+                        <input type="file" id="photo" name="photo" accept="image/*" onchange="updateFileName(this)">
+                        <span class="file-name" id="file-name">No file chosen</span>
+                    </div>
+                    <p style="color: #666; font-size: 14px; margin-top: 10px;">Accepted formats: JPG, JPEG, PNG, GIF (Max 16MB)</p>
+                </div>
+            </div>
+            
+            <button type="submit" class="btn btn-primary" style="width: 100%;">Update Profile</button>
+        </form>
+    </div>
+</div>
+
+<script>
+function updateFileName(input) {
+    const fileName = document.getElementById('file-name');
+    if (input.files.length > 0) {
+        fileName.textContent = input.files[0].name;
+    } else {
+        fileName.textContent = 'No file chosen';
+    }
+}
+</script>
+{% endblock %}

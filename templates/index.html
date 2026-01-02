@@ -1,0 +1,78 @@
+{% extends "base.html" %}
+
+{% block title %}Home - User Management System{% endblock %}
+
+{% block extra_css %}
+<style>
+    .welcome-section {
+        text-align: center;
+        padding: 60px 20px;
+    }
+    
+    .welcome-section h2 {
+        color: #667eea;
+        font-size: 36px;
+        margin-bottom: 20px;
+    }
+    
+    .welcome-section p {
+        color: #666;
+        font-size: 18px;
+        margin-bottom: 40px;
+    }
+    
+    .card-container {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+        gap: 30px;
+        margin-top: 40px;
+    }
+    
+    .card {
+        background: #f8f9fa;
+        padding: 30px;
+        border-radius: 10px;
+        text-align: center;
+        transition: transform 0.3s, box-shadow 0.3s;
+    }
+    
+    .card:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 8px 16px rgba(0,0,0,0.2);
+    }
+    
+    .card h3 {
+        color: #667eea;
+        margin-bottom: 15px;
+        font-size: 24px;
+    }
+    
+    .card p {
+        color: #666;
+        margin-bottom: 20px;
+    }
+</style>
+{% endblock %}
+
+{% block content %}
+<div class="welcome-section">
+    <h2>Welcome to User Management System</h2>
+    <p>Manage users and their profiles efficiently</p>
+    
+    <div class="card-container">
+        <div class="card">
+            <h3>Administrator</h3>
+            <p>Create and manage user accounts</p>
+            <a href="{{ url_for('admin_register') }}" class="btn btn-primary">Register as Admin</a>
+            <br><br>
+            <a href="{{ url_for('admin_login') }}" class="btn btn-secondary">Login as Admin</a>
+        </div>
+        
+        <div class="card">
+            <h3>User</h3>
+            <p>Access your profile and manage your information</p>
+            <a href="{{ url_for('user_login') }}" class="btn btn-primary">Login as User</a>
+        </div>
+    </div>
+</div>
+{% endblock %}
